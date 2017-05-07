@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MVC5Course.Models;
+using MVC5Course.Models.ViewModel;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using MVC5Course.Models;
-using MVC5Course.Models.ViewModel;
 
 namespace MVC5Course.Controllers
 {
@@ -18,7 +15,7 @@ namespace MVC5Course.Controllers
         // GET: Products
         public ActionResult Index(bool Active)
         {
-            var data = db.Product.Where(p=>p.Active == Active).Take(10);
+            var data = db.Product.Where(p => p.Active == Active).Take(10);
             return View(data);
         }
 
@@ -129,13 +126,13 @@ namespace MVC5Course.Controllers
         public ActionResult ProductsList()
         {
             var data = (from m in db.Product
-                      
-                       select new ProductVM()
-                       {
-                           ProductName = m.ProductName,
-                           Price = m.Price,
-                           Stock = m.Stock 
-                       }).Take(10);
+
+                        select new ProductVM()
+                        {
+                            ProductName = m.ProductName,
+                            Price = m.Price,
+                            Stock = m.Stock
+                        }).Take(10);
             return View(data);
         }
 
@@ -156,9 +153,9 @@ namespace MVC5Course.Controllers
         [HttpPost]
         public ActionResult CreateProduct(ProductVM data)
         {
-            if(ModelState.IsValid )
+            if (ModelState.IsValid)
             {
-                return RedirectToAction ("ProductsList");
+                return RedirectToAction("ProductsList");
             }
             return View();
         }

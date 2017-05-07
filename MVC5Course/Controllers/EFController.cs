@@ -1,29 +1,27 @@
 ﻿using MVC5Course.Models;
-using System;
-using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MVC5Course.Controllers
 {
     public class EFController : Controller
     {
-       private FabricsEntities db = new FabricsEntities();
+        private FabricsEntities db = new FabricsEntities();
+
         // GET: EF
         public ActionResult Index()
         {
             var all = db.Product.AsQueryable();
-            
+
             var data = all
-                .Where(p => p.Active == true && p.ProductName.Contains("Black"))
+                .Where(p => p.Is刪除 != true && p.Active == true && p.ProductName.Contains("Black"))
                 .OrderByDescending(p => p.ProductId);
             return View(data);
         }
 
         public ActionResult Create()
         {
-
             return View();
         }
 
@@ -31,23 +29,22 @@ namespace MVC5Course.Controllers
         public ActionResult Create(Product product)
         {
             if (ModelState.IsValid)
-               {
+            {
                 db.Product.Add(product);
                 db.SaveChanges();
-               }
+            }
             return View();
         }
 
         public ActionResult Edit(int id)
         {
             var item = db.Product.Find(id);
-                        return View(item);
+            return View(item);
         }
 
         [HttpPost]
         public ActionResult Edit(int id, Product product)
         {
-
             if (ModelState.IsValid)
             {
                 var item = db.Product.Find(id);
@@ -65,22 +62,33 @@ namespace MVC5Course.Controllers
         public ActionResult Delete(int id)
         {
             var product = db.Product.Find(id);
-            
 
-
-            foreach (var item in product.OrderLine.ToList())
-            {
-                db.OrderLine.Remove(item);
-            }
+            //foreach (var item in product.OrderLine.ToList())
+            //{
+            //    db.OrderLine.Remove(item);
+            //}
 
             //db.OrderLine.RemoveRange(product.OrderLine);
-
-            db.Product.Remove(product);
-            db.SaveChanges();
+            try
+            {
+                product.Is刪除 = true;
+            }
+            catch(DbEntityValidationException ex)
+            {
+                throw ex;
+            }
             
-           return RedirectToAction("Index");
+
+            //db.Product.Remove(product);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
-        
+        public ActionResult Details(int id)
+        {
+            var data = db.Database.SqlQuery<Product>("SELECT * FROM dbo.Product WHERE ProductId=@p0",id).FirstOrDefault ();
+            return View(data);
+        }
     }
 }
