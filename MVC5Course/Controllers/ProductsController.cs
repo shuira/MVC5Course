@@ -139,12 +139,20 @@ namespace MVC5Course.Controllers
             return View(data);
         }
 
-        
+        /// <summary>
+        /// 建立產品頁面方法
+        /// </summary>
+        /// <returns></returns>
         public ActionResult CreateProduct()
         {
             return View();
         }
 
+        /// <summary>
+        /// 寫入資料 submit 時候 [HttpPost] 方法接
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult CreateProduct(ProductVM data)
         {
