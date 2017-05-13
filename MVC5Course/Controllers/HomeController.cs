@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-
+using System.Linq;
 namespace MVC5Course.Controllers
 {
     public class HomeController : BaseController
@@ -55,5 +55,14 @@ namespace MVC5Course.Controllers
          {
              return File(Server.MapPath("~/Content/123.jpg"), "image/jpg", "NewName.jpg");
          }
+
+        public ActionResult GetJson()
+        {
+            db.Configuration.LazyLoadingEnabled = false;
+            
+                       return Json(db.Product.Take(5),
+            JsonRequestBehavior.AllowGet);
+        }
+
 }
 }
