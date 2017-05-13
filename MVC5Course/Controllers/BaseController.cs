@@ -13,5 +13,12 @@ namespace MVC5Course.Controllers
     public abstract class BaseController : Controller
     {
          protected FabricsEntities db = new FabricsEntities();
+
+        //找不到網址導頁功能
+
+        //protected override void HandleUnknownAction(string actionName)
+        //{
+        //    this.RedirectToAction("Index", "Home").ExecuteResult(this.ControllerContext);
+        //}
     }
 }
