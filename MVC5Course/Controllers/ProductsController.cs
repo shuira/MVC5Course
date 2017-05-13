@@ -1,11 +1,12 @@
 ﻿using MVC5Course.Models;
 using MVC5Course.Models.ViewModel;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-
+using MVC5Course.Models.ViewModel;
 namespace MVC5Course.Controllers
 {
     public class ProductsController : BaseController
@@ -19,7 +20,7 @@ namespace MVC5Course.Controllers
         {
             var data = repo.GetProduct列表頁所有資料(Active, showAll: false);
 
-            return View(data);
+            return View(data); //等於 ViewData.Model =data;
         }
 
         // GET: Products/Details/5
@@ -120,18 +121,28 @@ namespace MVC5Course.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult ListProducts()
+        public ActionResult ProductsList(ProductVMQ model)
         {
-            var data = repo.GetProduct列表頁所有資料(true)
-                .Select(p => new ProductVM()
+            var data = repo.GetProduct列表頁所有資料(true);
+            if (ModelState.IsValid)
+            {
+                if (!String.IsNullOrEmpty(model.q))
                 {
-                    //ProductId = p.ProductId,
-                    ProductName = p.ProductName,
-                    Price = p.Price,
-                    Stock = p.Stock
-                });
+                    data = data.Where(p => p.ProductName.Contains(model.q));
+                }
 
-            return View(data);
+                data = data.Where(p => p.Stock > model.Stock_S && p.Stock < model.Stock_E);
+
+                ViewData.Model = data
+                    .Select(p => new ProductVM()
+                    {
+
+                        ProductName = p.ProductName,
+                        Price = p.Price,
+                        Stock = p.Stock
+                    });
+            }
+            return View();
         }
 
         public ActionResult CreateProduct()
@@ -145,7 +156,8 @@ namespace MVC5Course.Controllers
             if (ModelState.IsValid)
             {
                 // TODO: 儲存資料進資料庫
-
+                TempData["CreateProduct_Result"] = " 商品新增成功 ";
+                
                 return RedirectToAction("ListProducts");
             }
             // 驗證失敗，繼續顯示原本的表單
