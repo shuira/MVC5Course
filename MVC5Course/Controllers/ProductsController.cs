@@ -49,6 +49,7 @@ namespace MVC5Course.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [HandleError(ExceptionType = typeof(System.Data.Entity.Infrastructure.DbUpdateException), View = "Error_DbUpdateException")]
         public ActionResult Create([Bind(Include = "ProductId,ProductName,Price,Active,Stock")] Product product)
         {
             if (ModelState.IsValid)

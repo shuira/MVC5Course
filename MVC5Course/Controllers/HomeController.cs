@@ -35,6 +35,7 @@ namespace MVC5Course.Controllers
             }
             else
             {
+                throw new System.ArgumentException("Error Handled!!");
                 return View("About");
             }
         }
