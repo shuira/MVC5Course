@@ -9,6 +9,7 @@ namespace MVC5Course.Models.ViewModel
     /// </summary>
     public class ProductVMQ:IValidatableObject
     {
+        
         [Required]
         [MinLength(5)]
         public string q { get; set; }

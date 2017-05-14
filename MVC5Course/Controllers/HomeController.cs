@@ -8,10 +8,10 @@ namespace MVC5Course.Controllers
         {
             return View();
         }
-
+        [SharedViewBag]
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            //ViewBag.Message = "Your application description page.";
 
             return View();
         }
@@ -24,10 +24,10 @@ namespace MVC5Course.Controllers
              return PartialView("SuccessRedirect", "/");
          }
 
-
-    public ActionResult PartialAbout()
+        [SharedViewBag(MyProperty = "")]
+        public ActionResult PartialAbout()
         {
-            ViewBag.Message = "Your application description page.";
+            //ViewBag.Message = "Your application description page.";
 
             if (Request.IsAjaxRequest())
             {

@@ -6,7 +6,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using MVC5Course.Models.ViewModel;
+
 namespace MVC5Course.Controllers
 {
     public class ProductsController : BaseController
@@ -81,11 +81,15 @@ namespace MVC5Course.Controllers
         // 詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductId,ProductName,Price,Active,Stock")] Product product)
+        public ActionResult Edit(int id,FormCollection form)
         {
-            if (ModelState.IsValid)
+            var product = repo.Get單筆資料ByProductId(id);
+            //範例程式會有問題,把不要欄位拿掉會用預設值更新
+            //[Bind(Include = "ProductId,ProductName,Price,Active,Stock")] Product product
+            //if (ModelState.IsValid)
+            if(TryUpdateModel<Product>(product))
             {
-                repo.Update(product);
+                //repo.Update(product);
                 repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
