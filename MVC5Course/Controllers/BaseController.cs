@@ -12,7 +12,7 @@ namespace MVC5Course.Controllers
     /// </summary>
     public abstract class BaseController : Controller
     {
-         protected FabricsEntities db = new FabricsEntities();
+        protected FabricsEntities db = new FabricsEntities();
 
         //找不到網址導頁功能
 
@@ -20,5 +20,11 @@ namespace MVC5Course.Controllers
         //{
         //    this.RedirectToAction("Index", "Home").ExecuteResult(this.ControllerContext);
         //}
+
+        [LocalOnly]
+        public ActionResult Debug()
+        {
+            return Content("Hello");
+        }
     }
 }
