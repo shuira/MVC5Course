@@ -55,6 +55,12 @@ namespace MVC5Course.Models
 
         public Nullable<decimal> Stock { get; set; }
 
+        //這兩個一組,格式要正確
+        [DataType(DataType.Date)]//改變view的顯示,會有UI (IE EAGE 都沒有UI)
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}",
+            ApplyFormatInEditMode = true)]
+        public DateTime CreatedOn { get; set; }
+
         public virtual ICollection<OrderLine> OrderLine { get; set; }
     }
 }

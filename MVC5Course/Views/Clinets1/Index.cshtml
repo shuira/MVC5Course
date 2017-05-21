@@ -6,9 +6,18 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@using (Html.BeginForm("Index", "Clinets1", FormMethod.Get))
+{
+    <text>
+    篩選:
+    @Html.DropDownList("CreditRatingFilter", " 選擇信用等級 ")
+    @Html.DropDownList("LastNameFilter", " 選擇姓 ")
+  
+        <input type = "submit" value = "執行篩選" />
+    </text>
+}
+
+
 <table class="table">
     <tr>
         <th>
@@ -25,6 +34,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DateOfBirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreditRating)
         </th>
  
         <th></th>
@@ -47,6 +59,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.DateOfBirth)
         </td>
+        <th>
+            @Html.DisplayFor(model => item.CreditRating)
+        </th>
       
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ClientId }) |

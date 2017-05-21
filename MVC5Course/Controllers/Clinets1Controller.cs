@@ -15,10 +15,54 @@ namespace MVC5Course.Controllers
         private FabricsEntities db = new FabricsEntities();
 
         // GET: Clinets1
-        public ActionResult Index()
+        //public ActionResult Index()
+        //{
+        //    var ratings = (from p in db.Client
+        //                    select p.CreditRating)
+        //                    .Distinct()
+        //                   .OrderBy(p => p).ToList();
+            
+        //    ViewBag.CreditRatingFilter = new SelectList(ratings);
+            
+        //    var lastNames = (from p in db.Client
+        //                   select p.LastName)
+        //                   .Distinct()
+        //                   .OrderBy(p => p).ToList();
+            
+        //    ViewBag.LastNameFilter = new SelectList(lastNames);
+        //    var client = db.Client.Include(c => c.Occupation);
+        //    return View(client.Take(10));
+        //}
+
+        public ActionResult Index(int CreditRatingFilter = -1,string LastNameFilter = "")
         {
-            var client = db.Client.Include(c => c.Occupation);
-            return View(client.ToList());
+            var ratings = (from p in db.Client
+                           where p.CreditRating < 10
+                           select p.CreditRating)
+                           .Distinct()
+                           .OrderBy(p => p).ToList();
+
+            ViewBag.CreditRatingFilter = new SelectList(ratings);
+
+            var lastNames = (from p in db.Client
+                             select p.LastName)
+                           .Distinct()
+                           .OrderBy(p => p).ToList();
+
+            ViewBag.LastNameFilter = new SelectList(lastNames);
+
+            var client = db.Client.AsQueryable();
+
+            if (CreditRatingFilter >= 0)
+            {
+                client = client.Where(p => p.CreditRating == CreditRatingFilter);
+            }
+            if (!String.IsNullOrEmpty(LastNameFilter))
+            {
+                client = client.Where(p => p.LastName == LastNameFilter);
+            }
+
+            return View(client.Take(10));
         }
 
         // GET: Clinets1/Details/5
@@ -73,6 +117,10 @@ namespace MVC5Course.Controllers
             {
                 return HttpNotFound();
             }
+
+            var items = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            ViewBag.CreditRating = new SelectList(items);
+
             ViewBag.OccupationId = new SelectList(db.Occupation, "OccupationId", "OccupationName", client.OccupationId);
             return View(client);
         }

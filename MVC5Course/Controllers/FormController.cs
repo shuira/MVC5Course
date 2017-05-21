@@ -11,6 +11,7 @@ namespace MVC5Course.Controllers
         // GET: Form
         public ActionResult Index()
         {
+            
             return View();
         }
 
